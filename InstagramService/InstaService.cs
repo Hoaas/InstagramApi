@@ -4,15 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Common;
 using Common.Models;
-using InstagramApiSharp;
 using InstagramApiSharp.Classes.Models;
 
 namespace InstagramService
 {
     public class InstaService
     {
-        private readonly InstaApiFactory _instaApiFactory;
         private static readonly Dictionary<string, DateTime> ThreadStatus = new Dictionary<string, DateTime>();
+
+        private readonly InstaApiFactory _instaApiFactory;
 
         public InstaService(InstaApiFactory instaApiFactory)
         {
@@ -23,7 +23,7 @@ namespace InstagramService
         {
             var api = await _instaApiFactory.Create();
 
-            var inbox = await api.MessagingProcessor.GetDirectInboxAsync(PaginationParameters.Empty);
+            var inbox = await api.MessagingProcessor.GetDirectInboxAsync(null);
             if (!inbox.Succeeded) throw new InstaException("Fail getting inbox");
 
             var newActivity = new List<InstaActivityDto>();
@@ -39,6 +39,7 @@ namespace InstagramService
                     let user = thread.Users.SingleOrDefault(u => u.Pk == item.UserId)
                     select CreateActivityDto(item, user)
                 );
+
                 ThreadStatus[thread.ThreadId] = thread.LastActivity;
             }
 
@@ -55,14 +56,10 @@ namespace InstagramService
                     Username = user.UserName,
                     ProfilePicture = user.ProfilePicture
                 },
-                Text = item.Text,
                 Timestamp = item.TimeStamp
             };
 
-            if (item.Media?.Images != null)
-            {
-                activity.Urls.AddRange(item.Media.Images.Select(i => i.Uri));
-            }
+            ActivityHandler.AddMediaToActivityBasedOnType(item, activity);
 
             return activity;
         }
@@ -71,7 +68,7 @@ namespace InstagramService
         {
             var api = await _instaApiFactory.Create();
 
-            var thread = await api.MessagingProcessor.GetDirectInboxThreadAsync(threadId, PaginationParameters.Empty);
+            var thread = await api.MessagingProcessor.GetDirectInboxThreadAsync(threadId, null);
 
             if (!thread.Succeeded) throw new InstaException("Could not get thread.");
 
@@ -82,7 +79,7 @@ namespace InstagramService
         {
             if (!ThreadStatus.TryGetValue(thread.ThreadId, out var lastAnnounceActivity))
             {
-                ThreadStatus.Add(thread.ThreadId, DateTime.Now);
+                ThreadStatus.Add(thread.ThreadId, DateTime.Now.AddDays(-1));
             }
 
             return lastAnnounceActivity != thread.LastActivity;

@@ -26,7 +26,7 @@ namespace InstagramService
         {
             if (_api != null) return _api;
 
-            _api = InstaApiBuilder.CreateBuilder()
+            var api = InstaApiBuilder.CreateBuilder()
                 .SetUser(new UserSessionData
                 {
                     UserName = _config.Username,
@@ -36,9 +36,10 @@ namespace InstagramService
                  .SetRequestDelay(RequestDelay.FromSeconds(2, 2))
                  .Build();
 
-            var status = await _api.LoginAsync();
+            var status = await api.LoginAsync();
              if (!status.Succeeded) throw new InstaException("Login failed.");
 
+            _api = api;
             return _api;
         }
     }
