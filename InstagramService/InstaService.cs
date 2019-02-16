@@ -79,7 +79,7 @@ namespace InstagramService
         {
             if (!ThreadStatus.TryGetValue(thread.ThreadId, out var lastAnnounceActivity))
             {
-                ThreadStatus.Add(thread.ThreadId, DateTime.Now.AddDays(-1));
+                ThreadStatus.Add(thread.ThreadId, DateTime.Now);
             }
 
             return lastAnnounceActivity != thread.LastActivity;
