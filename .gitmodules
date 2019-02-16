@@ -1,0 +1,3 @@
+[submodule "InstagramApiSharp"]
+	path = InstagramApiSharp
+	url = https://github.com/Hoaas/InstagramApiSharp.git
