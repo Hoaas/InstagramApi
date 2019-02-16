@@ -38,6 +38,7 @@ namespace InstagramService
                     let user = thread.Users.SingleOrDefault(u => u.Pk == item.UserId)
                     select CreateActivityDto(item, user)
                 );
+                ThreadStatus[thread.ThreadId] = thread.LastActivity;
             }
 
             return newActivity;
@@ -53,7 +54,8 @@ namespace InstagramService
                     Username = user.UserName,
                     ProfilePicture = user.ProfilePicture
                 },
-                Text = item.Text
+                Text = item.Text,
+                Timestamp = item.TimeStamp
             };
 
             if (item.Media?.Images != null)
@@ -71,7 +73,8 @@ namespace InstagramService
             var thread = await api.GetDirectInboxThreadAsync(threadId);
 
             if (!thread.Succeeded) throw new InstaException("Could not get thread.");
-            return thread.Value.Items;
+
+            return thread.Value.Items.Where(t => t.TimeStamp > ThreadStatus[threadId]).ToList();
         }
 
         private static bool DoesThreadContainNewData(InstaDirectInboxThread thread)

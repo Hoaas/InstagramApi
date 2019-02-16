@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Common.Models
 {
@@ -7,6 +8,8 @@ namespace Common.Models
         public InstaUserDto User { get; set; }
 
         public string Text { get; set; }
+
+        public DateTime Timestamp { get; set; }
 
         public List<string> Urls { get; set; } = new List<string>();
     }
