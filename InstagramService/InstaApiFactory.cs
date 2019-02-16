@@ -1,10 +1,10 @@
 ﻿using Common;
-using InstaSharper.API;
-using InstaSharper.API.Builder;
-using InstaSharper.Classes;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using InstagramApiSharp.API;
+using InstagramApiSharp.API.Builder;
+using InstagramApiSharp.Classes;
 
 namespace InstagramService
 {

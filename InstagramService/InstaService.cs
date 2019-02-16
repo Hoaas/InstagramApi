@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Common;
 using Common.Models;
-using InstaSharper.Classes.Models;
+using InstagramApiSharp;
+using InstagramApiSharp.Classes.Models;
 
 namespace InstagramService
 {
@@ -22,7 +23,7 @@ namespace InstagramService
         {
             var api = await _instaApiFactory.Create();
 
-            var inbox = await api.GetDirectInboxAsync();
+            var inbox = await api.MessagingProcessor.GetDirectInboxAsync(PaginationParameters.Empty);
             if (!inbox.Succeeded) throw new InstaException("Fail getting inbox");
 
             var newActivity = new List<InstaActivityDto>();
@@ -60,7 +61,7 @@ namespace InstagramService
 
             if (item.Media?.Images != null)
             {
-                activity.Urls.AddRange(item.Media.Images.Select(i => i.URI));
+                activity.Urls.AddRange(item.Media.Images.Select(i => i.Uri));
             }
 
             return activity;
@@ -70,7 +71,7 @@ namespace InstagramService
         {
             var api = await _instaApiFactory.Create();
 
-            var thread = await api.GetDirectInboxThreadAsync(threadId);
+            var thread = await api.MessagingProcessor.GetDirectInboxThreadAsync(threadId, PaginationParameters.Empty);
 
             if (!thread.Succeeded) throw new InstaException("Could not get thread.");
 
