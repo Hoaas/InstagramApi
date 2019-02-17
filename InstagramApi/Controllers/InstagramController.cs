@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Common;
 using Common.Models;
+using InstagramApi.Models;
 using InstagramService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
