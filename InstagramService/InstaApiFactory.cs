@@ -37,7 +37,7 @@ namespace InstagramService
                  .Build();
 
             var status = await api.LoginAsync();
-             if (!status.Succeeded) throw new InstaException("Login failed.");
+             if (!status.Succeeded) throw new InstaException($"Login failed with username '{_config.Username}'.");
 
             _api = api;
             return _api;
