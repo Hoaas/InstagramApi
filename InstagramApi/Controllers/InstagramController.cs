@@ -1,9 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Common;
 using Common.Models;
 using InstagramService;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace InstagramApi.Controllers
 {
@@ -12,10 +17,20 @@ namespace InstagramApi.Controllers
     public class InstagramController : ControllerBase
     {
         private readonly InstaService _instaService;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILogger<InstagramController> _logger;
+        private readonly IrcConfig _config;
 
-        public InstagramController(InstaService instaService)
+        public InstagramController(
+            InstaService instaService,
+            IHttpClientFactory httpClientFactory,
+            IOptions<IrcConfig> ircConfig,
+            ILogger<InstagramController> logger)
         {
             _instaService = instaService;
+            _httpClientFactory = httpClientFactory;
+            _logger = logger;
+            _config = ircConfig.Value;
         }
 
         [HttpGet]
@@ -26,21 +41,45 @@ namespace InstagramApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<string>> Irc()
+        public async Task<IActionResult> Irc()
         {
+            var client = _httpClientFactory.CreateClient();
+
+            var response = await client.GetAsync(_config.Url);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return StatusCode(412, $"Url '{_config.Url}' not available.");
+            }
+
             var activities = await _instaService.GetAllNewActivity();
-            return activities
-                .OrderBy(a => a.Timestamp)
-                .Select(a =>
+
+            foreach (var activity in activities)
+            {
+                var message = $"{activity.User.Fullname} ({activity.User.Username}): ";
+
+                if (!string.IsNullOrWhiteSpace(activity.Text)) message += $"{activity.Text.Trim()} ";
+
+                if (activity.Urls != null && activity.Urls.Any()) message += string.Join(" ", activity.Urls);
+
+                message = message.Trim();
+
+                var ircDto = new IrcDto
                 {
-                    var message = $"{a.User.Fullname} ({a.User.Username}): ";
+                    Channel = _config.Channel,
+                    Message = $"[IG] {message}"
+                };
 
-                    if (!string.IsNullOrWhiteSpace(a.Text)) message += $"{a.Text.Trim()} ";
+                var json = JsonConvert.SerializeObject(ircDto);
 
-                    if (a.Urls != null && a.Urls.Any()) message += string.Join(" ", a.Urls);
+                var postResponse = await client.PostAsync(_config.Url, new StringContent(json));
+                if (!postResponse.IsSuccessStatusCode)
+                {
+                    _logger.LogError($"Post to IRC failed. Got code '{postResponse.StatusCode}' and message: '{await postResponse.Content.ReadAsStringAsync()}'.");
+                }
+            }
 
-                    return message.Trim();
-                });
+            return Ok();
         }
     }
 }

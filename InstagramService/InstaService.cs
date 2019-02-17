@@ -10,6 +10,7 @@ namespace InstagramService
 {
     public class InstaService
     {
+        private static readonly DateTime StartupTime = DateTime.Now;
         private static readonly Dictionary<string, DateTime> ThreadStatus = new Dictionary<string, DateTime>();
 
         private readonly InstaApiFactory _instaApiFactory;
@@ -79,7 +80,7 @@ namespace InstagramService
         {
             if (!ThreadStatus.TryGetValue(thread.ThreadId, out var lastAnnounceActivity))
             {
-                ThreadStatus.Add(thread.ThreadId, DateTime.Now);
+                ThreadStatus.Add(thread.ThreadId, StartupTime);
             }
 
             return lastAnnounceActivity != thread.LastActivity;

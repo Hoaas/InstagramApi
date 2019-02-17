@@ -22,6 +22,7 @@ namespace InstagramApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<InstagramApiConfig> (o => Configuration.GetSection("InstagramApi").Bind(o));
+            services.Configure<IrcConfig> (o => Configuration.GetSection("Irc").Bind(o));
 
             services.AddLogging(logging =>
             {
@@ -32,6 +33,7 @@ namespace InstagramApi
 
             services.AddSingleton<InstaApiFactory>();
             services.AddTransient<InstaService>();
+            services.AddHttpClient();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
