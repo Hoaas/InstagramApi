@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Common.Models;
 using InstagramService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,23 +8,20 @@ namespace InstagramApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class InstagramController : ControllerBase
     {
         private readonly InstaService _instaService;
 
-        public ValuesController(InstaService instaService)
+        public InstagramController(InstaService instaService)
         {
             _instaService = instaService;
         }
 
-        // GET api/values
         [HttpGet]
-        //public ActionResult<IEnumerable<string>> Get()
-        public async Task<IActionResult> Get()
+        public async Task<List<InstaActivityDto>> Get()
         {
             var activities = await _instaService.GetAllNewActivity();
-
-            return Ok(activities);
+            return activities;
         }
     }
 }
