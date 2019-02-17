@@ -31,7 +31,16 @@ namespace InstagramApi.Controllers
             var activities = await _instaService.GetAllNewActivity();
             return activities
                 .OrderBy(a => a.Timestamp)
-                .Select(a => $"{a.User.Fullname} ({a.User.Username}): {a.Text} {string.Join(" ", a.Urls)}");
+                .Select(a =>
+                {
+                    var message = $"{a.User.Fullname} ({a.User.Username}): ";
+
+                    if (!string.IsNullOrWhiteSpace(a.Text)) message += $"{a.Text.Trim()} ";
+
+                    if (a.Urls != null && a.Urls.Any()) message += string.Join(" ", a.Urls);
+
+                    return message.Trim();
+                });
         }
     }
 }
