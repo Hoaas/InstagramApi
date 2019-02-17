@@ -95,6 +95,8 @@ namespace InstagramService
                     activity.Urls.Add(item.LiveViewerInvite.Broadcast.RtmpPlaybackUrl);
                     break;
             }
+
+            activity.Urls = activity.Urls.Distinct().ToList();
         }
     }
 }
