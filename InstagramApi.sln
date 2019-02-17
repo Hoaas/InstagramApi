@@ -15,10 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "20 Data Layer", "20 Data La
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "30 Domain Layer", "30 Domain Layer", "{E0F942E2-5D66-4224-802B-7A5F9E7D7C76}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InstagramApiSharp", "InstagramApiSharp\src\InstagramApiSharp\InstagramApiSharp.csproj", "{1F638CD8-7DF9-4965-9717-01D029BBCACB}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "50 Git Submodules", "50 Git Submodules", "{557EBBEC-3DEA-4CB5-9F09-039CDA78AE3F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,10 +33,6 @@ Global
 		{B8F3E3AC-8EEE-43C7-89C1-CCBDA1DFD82C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8F3E3AC-8EEE-43C7-89C1-CCBDA1DFD82C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8F3E3AC-8EEE-43C7-89C1-CCBDA1DFD82C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F638CD8-7DF9-4965-9717-01D029BBCACB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F638CD8-7DF9-4965-9717-01D029BBCACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F638CD8-7DF9-4965-9717-01D029BBCACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F638CD8-7DF9-4965-9717-01D029BBCACB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,7 +41,6 @@ Global
 		{1205AD27-21CC-43A9-8E01-0A33ED266FFC} = {12221C43-6AC8-4769-A7E6-CAEF12026466}
 		{6971AB04-A4C8-4A1D-AD34-F810815F7FB2} = {248BDCED-79DB-4690-B193-682A58873B07}
 		{B8F3E3AC-8EEE-43C7-89C1-CCBDA1DFD82C} = {E0F942E2-5D66-4224-802B-7A5F9E7D7C76}
-		{1F638CD8-7DF9-4965-9717-01D029BBCACB} = {557EBBEC-3DEA-4CB5-9F09-039CDA78AE3F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5FD27FCC-2F41-4A64-B1E9-1FBBB637ABAD}
