@@ -20,7 +20,7 @@
     "InstagramApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "api/instagram",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
